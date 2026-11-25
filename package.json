@@ -1,0 +1,16 @@
+{
+  "name": "jember-persistent-pipeline",
+  "version": "1.0.0",
+  "description": "Multi-container weather telemetry web application with PostgreSQL persistence for Kota Jember",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "pg": "^8.11.5"
+  },
+  "author": "Muhammad Habib Ar-Rasyid Ashar",
+  "license": "ISC"
+}
+
