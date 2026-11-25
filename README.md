@@ -2,7 +2,7 @@
 
 Sistem Telemetri Cuaca Kota Jember berbasis arsitektur **Multi-Container (Node.js Express + PostgreSQL 16 Alpine)** dengan **Cloud Networking Terisolasi (Custom Bridge)** dan **Persistent Storage (Docker Named Volumes)**.
 
-Tugas Praktikum Komputasi Awan (Cloud Computing) - Universitas Jember  
+Tugas Praktikum Komputasi Awan (Cloud Computing) - Fakultas Ilmu Komputer, Universitas Jember  
 **Arsitek Sistem:** Muhammad Habib Ar-Rasyid Ashar  
 **NIM:** 242410102068  
 
@@ -18,7 +18,7 @@ Tugas Praktikum Komputasi Awan (Cloud Computing) - Universitas Jember
     |  DOCKER NETWORK: jember-isolated-net          |
     |                                               |
     |   [ jember-web-app ]                          |
-    |   Node.js Express                             |
+    |   Node.js Express (app.js)                    |
     |          │                                    |
     |          ▼ (DNS: jember-pg-db:5432)           |
     |   [ jember-pg-db ]                            |
@@ -31,19 +31,19 @@ Tugas Praktikum Komputasi Awan (Cloud Computing) - Universitas Jember
 
 ---
 
-## 🚀 Panduan Menjalankan Sistem
+## 📂 Struktur Berkas Proyek
 
-### Opsi 1: Menggunakan Skrip Otomatisasi (PowerShell)
-```powershell
-.\setup-misi2.ps1
-```
+| Berkas | Deskripsi |
+| :--- | :--- |
+| **`package.json`** | Manifes dependensi Node.js (`express` dan `pg`). |
+| **`app.js`** | Server Express (port 3000), koneksi `pg.Pool`, dan dashboard *Dark Telemetry*. |
+| **`Dockerfile`** | Instruksi kompilasi image web berbasis `node:20-alpine`. |
+| **`init.sql`** | Skrip DDL & DML skema tabel `log_sensor` dan data mahasiswa. |
+| **`LAPORAN_MISI2.md`** | Laporan praktikum resmi, bukti interaktif screenshot, dan analisis TL;DR Volumes vs Bind Mounts. |
 
-### Opsi 2: Menggunakan Docker Compose
-```bash
-docker compose up -d --build
-```
+---
 
-### Opsi 3: Eksekusi Manual (Docker CLI)
+## 🚀 Panduan Eksekusi Langkah Demi Langkah
 
 1. **Buat Custom Bridge Network:**
    ```bash
@@ -64,7 +64,7 @@ docker compose up -d --build
      --restart unless-stopped postgres:16-alpine
    ```
 
-4. **Build & Jalankan Web App:**
+4. **Build & Jalankan Web App Container:**
    ```bash
    docker build -t jember-web-app .
    docker run -d --name jember-web-app --network jember-isolated-net -p 3000:3000 \
@@ -74,7 +74,7 @@ docker compose up -d --build
      --restart unless-stopped jember-web-app
    ```
 
-5. **Inisialisasi Tabel & Data Sensor (Exec ke DB):**
+5. **Inisialisasi Tabel & Data Sensor (Terminal psql):**
    ```bash
    docker exec -it jember-pg-db psql -U habib -d jember_telemetry
    ```
@@ -92,7 +92,7 @@ docker compose up -d --build
 
    SELECT * FROM log_sensor;
    ```
-   Ketik `\q` untuk keluar.
+   Ketik `\q` untuk keluar dari prompt database.
 
 6. **Akses Dashboard Web:**
    Buka peramban di `http://localhost:3000`
@@ -100,7 +100,7 @@ docker compose up -d --build
 ---
 
 ## 🛡️ Uji Ketahanan Data Persisten (Disaster Recovery Test)
-Buktikan bahwa data tidak hilang saat container dihapus paksa:
+Buktikan bahwa data tidak hilang saat container database dihapus paksa:
 ```bash
 docker rm -f jember-pg-db
 docker run -d --name jember-pg-db --network jember-isolated-net -e POSTGRES_USER=habib -e POSTGRES_PASSWORD=smartcity123 -e POSTGRES_DB=jember_telemetry -v jember-pg-volume:/var/lib/postgresql/data --restart unless-stopped postgres:16-alpine
@@ -110,5 +110,5 @@ Data tetap tersimpan utuh berkat **`jember-pg-volume`**.
 
 ---
 
-## 📄 Laporan Lengkap
-Dokumentasi lengkap dan analisis mendalam mengenai perbandingan Docker Volumes vs Bind Mounts tersedia di berkas [LAPORAN_MISI2.md](./LAPORAN_MISI2.md).
+## 📄 Laporan Praktikum Lengkap
+Dokumentasi lengkap, tempat bukti screenshot, dan analisis ilmiah perbandingan Docker Volumes vs Bind Mounts tersedia di berkas [LAPORAN_MISI2.md](./LAPORAN_MISI2.md).
