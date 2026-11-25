@@ -1,4 +1,4 @@
-# Jember Persistent Pipeline - Smart City Telemetry (Misi 2)
+# Jember Persistent Pipeline - Smart City Telemetry 
 
 Sistem Telemetri Cuaca Kota Jember berbasis arsitektur **Multi-Container (Node.js Express + PostgreSQL 16 Alpine)** dengan **Cloud Networking Terisolasi (Custom Bridge)** dan **Persistent Storage (Docker Named Volumes)**.
 
@@ -111,4 +111,6 @@ Data tetap tersimpan utuh berkat **`jember-pg-volume`**.
 ---
 
 ## 📄 Laporan Praktikum Lengkap
-Dokumentasi lengkap, tempat bukti screenshot, dan analisis ilmiah perbandingan Docker Volumes vs Bind Mounts tersedia di berkas [LAPORAN_MISI2.md](./LAPORAN_MISI2.md).
+Dokumentasi lengkap, tempat bukti screenshot, dan analisis ilmiah perbandingan Docker Volumes vs Bind Mounts tersedia di berkas [[](https://docs.google.com/document/d/1WsgM_Amq41mwS4kBWKNzqTxWutH2nGNtFzFcTqsTPAI/edit?usp=sharing).
+
+
